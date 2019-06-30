@@ -14,3 +14,7 @@ run_list 'lenovo_systemupdate::default'
 
 # Specify a custom source for a single cookbook:
 cookbook 'lenovo_systemupdate', path: '.'
+
+default['lenovo_systemupdate'] = {
+  'non_lenovo_system': true
+}

@@ -5,14 +5,13 @@
 # The Inspec reference, with examples and extensive documentation, can be
 # found at http://inspec.io/docs/reference/resources/
 
-unless os.windows?
-  # This is an example test, replace with your own test.
-  describe user('root'), :skip do
-    it { should exist }
-  end
+return unless os.windows?
+
+describe registry_key('HKLM\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full') do
+  its('Release') { should cmp > 379893 }
 end
 
-# This is an example test, replace it with your own test.
-describe port(80), :skip do
-  it { should_not be_listening }
+describe registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\TVSU_is1') do
+  it { should exist }
+  its('DisplayName') { should match(/Lenovo System Update/) }
 end

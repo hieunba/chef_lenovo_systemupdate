@@ -15,3 +15,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+if node['platform'] !~ /windows/
+  log 'Unsupported platform for LENOVO System Update' do
+    message "Does not support #{node['platform']} platform"
+    level :warn
+  end
+  return
+end
+
+hardware_vendor = node['kernel']['cs_info']['manufacturer']
+
+windows_package node['lenovo_systemupdate']['package_name'] do
+  source node['lenovo_systemupdate']['source']
+  checksum node['lenovo_systemupdate']['checksum'] if node['lenovo_systemupdate']['checksum']
+  action :install
+  only_if { hardware_vendor =~ /LENOVO/ || node['lenovo_systemupdate']['non_lenovo_system'] }
+end
